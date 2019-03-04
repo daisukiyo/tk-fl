@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .row
+    each service, index in services
+      .col-sm-4.justify-content-center
+        .card
+          img.card-img-top(src=service.picUrl, alt='Card image cap')
+          .card-body
+            h4.card-title= service.title
+            small.text-muted= "Estimate: " + service.duration
+            p.card-text= service.description
+            .text-right
+                a.card-link(href=`/services/${service._id}`) View #{service.title}

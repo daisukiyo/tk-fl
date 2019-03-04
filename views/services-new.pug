@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    
+  .row.justify-content-center
+    .col-sm-6
+      legend New Service
+      form(action="/services", method="post")
+        .form-group
+            label Title
+            input.form-control(name="name")
+        .form-group
+            label Duration
+            input.form-control(name="duration")
+        .form-group
+            label Rectangular Image URL
+            input.form-control(name="picUrl") 
+        .form-group
+            label Square Image URL
+            input.form-control(name="picUrlSq")   
+        .form-group
+            label Description
+            textarea.form-control(name="description")   
+        button(type="submit").btn.btn-primary Save

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .row
+    .col-sm-4
+      if service.picUrlSq
+        img(src=service.picUrlSq).img-fluid
+    .col-sm-8
+      h1=service.name
+      p=service.duration
+      p=service.description
+      .text-right
+        a(href="/services/" + service.id + "/edit").btn-link Edit
