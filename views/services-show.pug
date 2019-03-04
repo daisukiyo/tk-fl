@@ -7,7 +7,7 @@ block content
         img(src=service.picUrlSq).img-fluid
     .col-sm-8
       h1=service.Title
-      p="Estimate: " + service.duration + " Day"
+      p="Estimate: " + service.duration + " Day(s)"
       p=service.description
       .text-right
         a(href="/services/" + service.id + "/edit").btn-link Edit

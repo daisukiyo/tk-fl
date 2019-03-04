@@ -13,9 +13,10 @@ module.exports = (app) => {
 
         service.save()
             .then((service) => {
-                res.send({ service });
+                res.send({ service:service });
             })
             .catch((err) => {
+                console.log(err);
                 res.status(400).send(err.errors);
             });
     });
