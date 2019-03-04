@@ -13,8 +13,9 @@ const ServiceSchema = new Schema ({
   title: { type: String, required: true },
   duration: { type: String, required: true },
   description: { type: String, required: true},
-  picUrl: { type: String, required: true},
-  picUrlSq: {type: String, required: true }
+  avatarUrl: { type: String, required: true },
+  picUrl: { type: String},
+  picUrlSq: {type: String}
 },
 {
   timestamps: true
