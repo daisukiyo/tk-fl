@@ -23,14 +23,14 @@ module.exports = (app) => {
     // show service
     app.get('/services/:id', (req, res) => {
         Service.findById(req.params.id).exec((err, service) => {
-            res.render('services-show', { service: service });
+            res.render('services-show', { service });
         });
     });
 
     // edit service
     app.get('/services/:id/edit', (req, res) => {
         Service.findById(req.params.id).exec((err, service) => {
-            res.render('services-edit', { service:service });
+            res.render('services-edit', { service });
         });
     });
 
@@ -51,5 +51,17 @@ module.exports = (app) => {
             return res.redirect('/')
         });
     });
-    
+
+    // search service
+    app.get('/search', (req, res) => {
+        term = new RegExp(req.query.term, 'i')
+
+        Service.find({$or: [
+            {'title': term},
+            {'duration': term} // how to search for numeric values? 
+        ]}).exec((err, services) => {
+            res.render('services-index', { services });
+        })
+    });
+
 }
