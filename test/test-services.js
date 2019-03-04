@@ -6,7 +6,7 @@ const Service = require('../models/service');
 
 const roflcopter =     {
     "title": "Install/Rice Arch Linux",
-    "duration": "One Day",
+    "duration": "1 Day",
     "description": "I will personally install the latest version of Arch Linux with full driver support and rice your desktop environment to your liking.",
     "picUrl": "https://i.redd.it/f5vu2auetgxz.png",
     "picUrlSq": "https://i.redd.it/f5vu2auetgxz.png"
@@ -114,5 +114,16 @@ describe('Services', ()  => {
         done();
       });
     });
+  });
+
+  // TEST SEARCH
+  it('should search ALL pets by name on /search GET', (done) => {
+    chai.request(server)
+        .get('/search?term=linux')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.html;
+          done();
+        });
   });
 });
