@@ -3,10 +3,12 @@ extends layout
 block content
   .row
     .col-sm-4
-      if service.picUrlSq
-        img(src=service.picUrlSq).img-fluid
+      if service.avatarUrl
+        img.card-img-top(src=service.avatarUrl + '-standard.', alt='Card image cap')
+      else
+        img.card-img-top(src=service.picUrlSq, alt='Card image cap')
     .col-sm-8
-      h1=service.Title
+      h1=service.title
       p="Estimate: " + service.duration + " Day(s)"
       p=service.description
       .text-right

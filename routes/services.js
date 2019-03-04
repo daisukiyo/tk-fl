@@ -1,5 +1,32 @@
 const Service = require('../models/service')
+// UPLOADING TO AWS S3
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const Upload = require('s3-uploader');
 
+const client = new Upload(process.env.S3_BUCKET, {
+    aws: {
+      path: 'services/avatar',
+      region: process.env.S3_REGION,
+      acl: 'public-read',
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    },
+    cleanup: {
+      versions: true,
+      original: true
+    },
+    versions: [{
+      maxWidth: 400,
+      aspect: '16:10',
+      suffix: '-standard'
+    },{
+      maxWidth: 300,
+      aspect: '1:1',
+      suffix: '-square'
+    }]
+  });
+    
 module.exports = (app) => {
 
     // new service
@@ -8,17 +35,26 @@ module.exports = (app) => {
     });
 
     // create service
-    app.post('/services', (req, res) => {
+    app.post('/services', upload.single('avatar'), (req, res, next) => {
         var service = new Service(req.body);
+        service.save(function (err) {
+            if (req.file) {
+                client.upload(req.file.path, {}, function (err, versions, meta) {
+                    if (err) { return res.status(400).send({ err: err}) };
 
-        service.save()
-            .then((service) => {
-                res.send({ service:service });
-            })
-            .catch((err) => {
-                console.log(err);
-                res.status(400).send(err.errors);
-            });
+                    versions.forEach(function(image) {
+                        var urlArray = image.url.split('-');
+                        urlArray.pop();
+                        var url = urlArray.join('-');
+                        service.avatarUrl = url;
+                        service.save();
+                    });
+                    res.send({service:service});
+                });
+            } else {
+                res.send({service:service});
+            }
+        })
     });
 
     // show service
