@@ -1,14 +1,16 @@
 if (document.querySelector('#new-service')) {
     document.querySelector('#new-service').addEventListener('submit', (e) => {
         e.preventDefault();
+        // Use FormData to grab everything now that we have files mixed in with text
+        var form = document.getElementById("new-service");
+        var service = new FormData(form);
 
-        let service = {};
-        const inputs = document.querySelectorAll('.form-control');
-        for (const input of inputs) {
-            service[input.name] = input.value;
-        }
-
-        axios.post('/services', service)
+        // Assign the multipart/form-data headers to axios does a proper post
+        axios.post('/services', service, {
+            headers: {
+                'Content-Type': 'multipart/form-data;',
+            }
+        })
             .then(function (response) {
                 window.location.replace(`/services/${response.data.service._id}`);
             })
@@ -20,7 +22,7 @@ if (document.querySelector('#new-service')) {
                 setTimeout(() => {
                     alert.style.display = 'none';
                     alert.classList.remove('alert-warning');
-                   }, 3000)
+                }, 3000)
             });
     });
 }
