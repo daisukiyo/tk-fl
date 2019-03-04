@@ -13,10 +13,10 @@ module.exports = (app) => {
 
         service.save()
             .then((service) => {
-                res.redirect(`/services/${service._id}`);
+                res.send({ service });
             })
             .catch((err) => {
-                // insert error handling
+                res.status(400).send(err.errors);
             });
     });
 
@@ -54,14 +54,18 @@ module.exports = (app) => {
 
     // search service
     app.get('/search', (req, res) => {
-        term = new RegExp(req.query.term, 'i')
-
-        Service.find({$or: [
-            {'title': term},
-            {'duration': term} // how to search for numeric values? 
-        ]}).exec((err, services) => {
-            res.render('services-index', { services });
-        })
-    });
+        const term = new RegExp(req.query.term, 'i')
+        const page = req.query.page || 1
+        Service.paginate(
+          {
+            $or: [
+              { 'title': term },
+              { 'duration': term }
+            ]
+          },
+          { page: page }).then((results) => {
+            res.render('services-index', { services: results.docs, pagesCount: results.pages, currentPage: page, term: req.query.term });
+          });
+      });
 
 }

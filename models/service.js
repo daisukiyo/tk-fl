@@ -3,6 +3,12 @@
 const mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
+const mongoosePaginate = require('mongoose-paginate');
+
+mongoosePaginate.paginate.options = {
+  limit: 3
+}
+
 const ServiceSchema = new Schema ({
   title: { type: String, required: true },
   duration: { type: String, required: true },
@@ -13,5 +19,8 @@ const ServiceSchema = new Schema ({
 {
   timestamps: true
 });
+
+ServiceSchema.plugin(mongoosePaginate)
+
 
 module.exports = mongoose.model('Service', ServiceSchema);
