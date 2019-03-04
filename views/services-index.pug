@@ -8,7 +8,7 @@ block content
           img.card-img-top(src=service.picUrl, alt='Card image cap')
           .card-body
             h4.card-title= service.title
-            small.text-muted= "Estimate: " + service.duration
+            small.text-muted= "Estimate: " + service.duration + " Day"
             p.card-text= service.description
             .text-right
                 a.card-link(href=`/services/${service._id}`) View #{service.title}
