@@ -24,5 +24,6 @@ const ServiceSchema = new Schema ({
 
 ServiceSchema.plugin(mongoosePaginate)
 
+ServiceSchema.index({ title: 'text', duration: 'text', price: 'text', description: 'text' });
 
 module.exports = mongoose.model('Service', ServiceSchema);

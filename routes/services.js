@@ -102,18 +102,34 @@ module.exports = (app) => {
 
     // search service
     app.get('/search', (req, res) => {
-        const term = new RegExp(req.query.term, 'i')
-        const page = req.query.page || 1
-        Service.paginate(
-          {
-            $or: [
-              { 'title': term },
-              { 'duration': term }
-            ]
-          },
-          { page: page }).then((results) => {
-            res.render('services-index', { services: results.docs, pagesCount: results.pages, currentPage: page, term: req.query.term });
-          });
+        Service
+            .find(
+                { $text : { $search : req.query.term } },
+                { score : { $meta : "textScore"} }
+            )
+            .sort({ score: { $meta : 'textScore' } } )
+            .limit(20)
+            .exec(function(err, services) {
+                if (err) { return res.status(400).send(err) }
+
+                if (req.header('Content-Type') == 'application/json') {
+                    return res.json({ services });
+                } else {
+                    return res.render('services-index', { services: services, term: req.query.term });
+                }
+            });
+        // const term = new RegExp(req.query.term, 'i')
+        // const page = req.query.page || 1
+        // Service.paginate(
+        //   {
+        //     $or: [
+        //       { 'title': term },
+        //       { 'duration': term }
+        //     ]
+        //   },
+        //   { page: page }).then((results) => {
+        //     res.render('services-index', { services: results.docs, pagesCount: results.pages, currentPage: page, term: req.query.term });
+        //   });
       });
 
     // purchase route
