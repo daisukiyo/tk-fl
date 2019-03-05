@@ -117,7 +117,7 @@ describe('Services', ()  => {
   });
 
   // TEST SEARCH
-  it('should search ALL pets by name on /search GET', (done) => {
+  it('should search ALL services by name on /search GET', (done) => {
     chai.request(server)
         .get('/search?term=linux')
         .end((err, res) => {
