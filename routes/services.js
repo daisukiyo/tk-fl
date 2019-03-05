@@ -3,6 +3,17 @@ const Service = require('../models/service')
 const multer  = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const Upload = require('s3-uploader');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
+
+const auth = {
+    auth: {
+        api_key: process.env.MAILGUN_API_KEY,
+        domain: process.env.EMAIL_DOMAIN
+    }
+}
+
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
 const client = new Upload(process.env.S3_BUCKET, {
     aws: {
@@ -105,4 +116,52 @@ module.exports = (app) => {
           });
       });
 
+    // purchase route
+    app.post('/services/:id/purchase', (req,res) => {
+        console.log(req.body);
+        var stripe = require("stripe")(process.env.PRIVATE_STRIPE_API_KEY);
+        const token = req.body.stripeToken;
+
+        let serviceId = req.body.serviceId || req.params.id;
+
+        Service.findById(serviceId).exec((err, service) => {
+            if(err) {
+                console.log('Error: ' + err);
+                res.redirect(`/services/${req.params.id}`);
+            }
+            const charge = stripe.charges.create({
+                amount: service.price * 100,
+                currency: 'usd',
+                description: `Service Purcahsed: ${service.title}`,
+                source: token,
+            }).then((chg) => {
+                const user = {
+                    email: req.body.stripeEmail,
+                    amount: chg.amount / 100,
+                    serviceTitle: service.title,
+                    servieDuration: service.duration
+                };
+                nodemailerMailgun.sendMail({
+                    from: 'no-reply@tk-fl.com',
+                    to: user.email,
+                    subject: 'Service Purchased!',
+                    template: {
+                        name: 'email.handlebars',
+                        engine: 'handlebars',
+                        context: user
+                    }
+                }).then(info => {
+                    console.log('Response: ' + info);
+                    res.redirect(`/services/${req.params.id}`);
+                }).catch(err => {
+                    console.log('Error: ' + err);
+                    res.redirect(`/services/${req.params.id}`);
+                });
+            })
+            .catch(err => {
+                console.log('Error: ' + err);
+            });
+        })
+    });
 }
+

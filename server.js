@@ -9,8 +9,8 @@ if (!process.env.PORT) {
   const logger = require('morgan');
   const cookieParser = require('cookie-parser');
   const bodyParser = require('body-parser');
-  const methodOverride = require('method-override')
-  
+  const methodOverride = require('method-override');
+
   const app = express();
   
   const mongoose = require('mongoose');
@@ -51,5 +51,8 @@ if (!process.env.PORT) {
     res.status(err.status || 500);
     res.render('error');
   });
+  
+  app.locals.PUBLIC_STRIPE_API_KEY = process.env.PUBLIC_STRIPE_API_KEY
+  app.locals.PRIVATE_STRIPE_API_KEY = process.env.PRIVATE_STRIPE_API_KEY
   
   module.exports = app;

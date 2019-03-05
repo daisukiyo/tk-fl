@@ -13,3 +13,14 @@ block content
       p=service.description
       .text-right
         a(href="/services/" + service.id + "/edit").btn-link Edit
+      form(action=`/services/${service._id}/purchase`, method='POST')
+        script.stripe-button(src='https://checkout.stripe.com/checkout.js',
+        data-key=PUBLIC_STRIPE_API_KEY,
+        data-amount=service.price*100,
+        data-name='TK-FL',
+        data-description='Tim Kaing Freelancing',
+        data-image='https://stripe.com/img/documentation/checkout/marketplace.png',
+        data-locale='auto',
+        data-zip-code='true')
+        input.form-control(type="hidden" value=service._id name="serviceID")
+      
