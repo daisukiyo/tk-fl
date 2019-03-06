@@ -11,3 +11,22 @@
 .card {
     margin-bottom:20px;
 }
+
+.container {
+    height: 100vh;
+}
+
+.hello {
+    position: absolute;
+     margin: auto;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     width: 30%;
+     height: 100px;
+}
+
+.card {
+    border-radius: 12px;
+}

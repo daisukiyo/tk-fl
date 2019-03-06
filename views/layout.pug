@@ -4,10 +4,10 @@ html
     title TK-FL
 
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous")
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/styles/style.css')
   body
 
-    nav.navbar.navbar-expand-sm.navbar-light.bg-light
+    nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
       a.navbar-brand(href='/') TK-FL
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
@@ -18,18 +18,12 @@ html
 
       form.form-inline(action='/search')
         input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search', name='term')
-        button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+        button.btn.btn-outline-secondary.my-2.my-sm-0(type='submit') Search
 
     .container
       .alert#alert(style="display:none;")
       block content
 
-    footer.mt-5
-      .container-fluid.bg-primary.py-3
-        .container
-          .row.py-3
-            .col-md-9
-              p.text-white TK-FL &#xA9; 2019
 
 
     script(src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous")
