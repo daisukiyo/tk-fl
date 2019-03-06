@@ -20,10 +20,10 @@ While learning web development recipes, I wanted to create an application to sho
 - Sending Emails
 
 #### MVP Goals
-- [ ] Admin can CRUD listings
-- [ ] Users can purchase services
-- [ ] Listings are paginated
-- [ ] Listings can be searched for
+- [ ] Authentication so only Admin's can CRUD services
+- [x] Users can purchase services (Recipe #1)
+- [x] Listings are paginated (Recipe #2)
+- [x] Listings can be searched for (Recipe #3)
 
 #### Stretch Goals
 - [ ] Users can set an appointment
